@@ -1,0 +1,24 @@
+header{
+    background-color: rgb(14, 21, 206);
+    color: white;
+    a{
+        color: white;
+    }
+    #codeial{
+        display: inline-flex;
+        padding:2rem;
+        font-size: 2rem;
+        font-weight: bold;
+    }
+    #icons{
+        background-color: rgb(14, 21, 206);
+        display: inline-flex;
+        float: right;
+        vertical-align: middle;
+        align-items: center; 
+        padding: 2.5rem;
+    }
+    .anchor-space {
+        margin-right: 10px; /* Adjust the value based on your desired space */
+    }
+}

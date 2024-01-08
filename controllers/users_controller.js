@@ -3,7 +3,7 @@ const User =require('../models/user');
 //     res.end('<h1>User Profile</h1>');
 // };
 module.exports.profile = function(req,res){
-    return res.render('users',{
+    return res.render('user_profile',{
         title:"Profile of users"
     });
 };
@@ -16,12 +16,18 @@ module.exports.post = function(res,res){
 };
 //render the sign up page
 module.exports.signUp = function(req,res){
+    if(req.isAuthenticated()){
+        return res.redirect('/users/profile')
+    }
     return res.render('user_sign_up',{
         title:"Codeial | Sign Up"
     });
 }
 //render the sign in page
 module.exports.signIn = function(req,res){
+    if(req.isAuthenticated()){
+        return res.redirect('/users/profile')
+    }
     return res.render('user_sign_in',{
         title: "Codeial | Sign In"
     });
@@ -59,5 +65,13 @@ module.exports.create = function(req,res){
 
 //get the sign in and create a session for the users
 module.exports.createSession = function(req,res){
-    //To do later
+    return res.redirect('/');
+}
+
+module.exports.destroySession = function(req,res){
+    console.log('hey');
+    req.logout(function (err) {
+        console.log('Error in sign out');
+    });
+    return res.redirect('/');
 }

@@ -1,3 +1,26 @@
 <header>
-    Page Header
+    <div id="codeial">
+        Codeial
+    </div>
+    
+
+    <div id="icons">
+        <% if (locals.user) {%>
+        
+            <a href="/users/profile" class="anchor-space">
+                <%= user.name %>
+            </a>
+        
+            <a href = "/users/sign-out">Sign Out</a>
+        
+       
+        <% } else {%>
+            
+                <a href = "/users/sign-in" class="anchor-space">Sign In</a>
+            
+                <a href = "/users/sign-up">Sign Up</a>
+            
+        <% }%>
+        </div>
+    
 </header>
