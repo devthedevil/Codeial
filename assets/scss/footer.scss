@@ -2,6 +2,9 @@ footer {
     background-color: rgb(5, 60, 36);
     color: white;
     padding: 2rem;
+    // display: flex;
+    // justify-content: flex-start;
+    // height: 100%;
     a{
         color: white;
     }
@@ -13,6 +16,7 @@ footer {
     #home{
         display: inline-flex;
         margin-left: 2rem;
+        // margin-top: 0.5rem;
         margin-bottom: 0.5rem;
     }
     #profile{
