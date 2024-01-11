@@ -1,0 +1,21 @@
+<head>
+    <title>
+        <%= title %>
+    </title>
+    <link rel="stylesheet" href="/css/user_profile.css">
+</head>
+<li id="comment-list">
+    <p>
+        <%if(locals.user && (locals.user.id==comment.user.id  || locals.user.id==post.user.id)  ){%>
+           
+            <small>
+                <a href="/comments/destroy/<%=comment.id%>">X</a>
+            </small>
+            <%}%>
+        <%= comment.content %>
+        <br>
+        <small>
+            <%= comment.user.name %>
+        </small>
+    </p>
+</li>

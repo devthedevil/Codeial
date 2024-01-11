@@ -3,9 +3,15 @@ const User =require('../models/user');
 //     res.end('<h1>User Profile</h1>');
 // };
 module.exports.profile = function(req,res){
-    return res.render('user_profile',{
-        title:"Profile of users"
-    });
+    User.findById(req.params.id)
+    .then(user=>{
+        return res.render('user_profile',{
+            title:"Profile of users",
+            profile_user:user
+        });
+    })
+    .catch(err=>{console.log("Error in finding the user by id",err);});
+    
 };
 // module.exports.users = function(res,res){
 //     res.end('<h1>Users</h1>');
@@ -69,7 +75,7 @@ module.exports.createSession = function(req,res){
 }
 
 module.exports.destroySession = function(req,res){
-    console.log('hey');
+    // console.log('hey');
     req.logout(function (err) {
         console.log('Error in sign out');
     });
