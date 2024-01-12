@@ -5,13 +5,9 @@
     <title>
         <%= title %>
     </title>
-    <link rel="stylesheet" href="/css/user_profile.css">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <title>Document</title> -->
+    <link rel="stylesheet" href="/css/home.css">
 </head>
-<body>
-    <h1><%= title %> </h1>
+<div id="home-container">
     <section id="feed-posts">
         <h4>Posts</h4>
         <% if(locals.user) {%>
@@ -36,5 +32,5 @@
             </p>
         <% } %>
     </section>
-</body>
+</div>
 </html>

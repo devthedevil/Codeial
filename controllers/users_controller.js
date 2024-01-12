@@ -13,6 +13,23 @@ module.exports.profile = function(req,res){
     .catch(err=>{console.log("Error in finding the user by id",err);});
     
 };
+module.exports.update = function(req,res){
+    console.log("hey");
+    if(req.user.id == req.params.id){
+        // User.findByIdAndUpdate(req.params.id,{name:req.body.name,email:req.body.email})
+        User.findByIdAndUpdate(req.params.id,req.body)
+        .then(user=>{
+            return res.redirect('back');
+        })
+        .catch(err=>{
+            console.log("Error in finding the user id for update",err);
+        });
+       
+    }else{
+        console.log("id doesn't matches");
+        return res.status(401).send('Unauthorized');
+    }
+}
 // module.exports.users = function(res,res){
 //     res.end('<h1>Users</h1>');
 // };
