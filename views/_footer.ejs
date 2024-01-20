@@ -7,7 +7,11 @@
         <a href="/"> Home</a>
     </div>
     <div id="profile">
-        <a href="/users/profile">Profile</a>
+        <%if (locals.user){%>
+        <a href="/users/profile/<%=locals.user.id%>">Profile</a>
+        <%}else{%>
+            <a href="/">Profile</a>
+        <%}%> 
     </div>
     <!-- </div> -->
         

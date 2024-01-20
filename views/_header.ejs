@@ -7,7 +7,7 @@
     <div id="icons">
         <% if (locals.user) {%>
         
-            <a href="/users/profile" class="anchor-space">
+            <a href="/users/profile/<%=locals.user.id%>" class="anchor-space">
                 <%= user.name %>
             </a>
         

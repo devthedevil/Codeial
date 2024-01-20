@@ -1,17 +1,18 @@
-<head>
+<!-- <head>
     <title>
         <%= title %>
     </title>
-    <link rel="stylesheet" href="/css/user_profile.css">
-</head>
-<li id="comment-list">
+    
+</head> -->
+<link rel="stylesheet" href="/css/user_profile.css">
+<li id="comment-<%=comment._id%>">
     <p>
         <%if(locals.user && (locals.user.id==comment.user.id  || locals.user.id==post.user.id)  ){%>
            
             <small>
-                <a href="/comments/destroy/<%=comment.id%>">X</a>
+                <a class="delete-comment-button" href="/comments/destroy/<%=comment.id%>">X</a>
             </small>
-            <%}%>
+        <%}%>
         <%= comment.content %>
         <br>
         <small>
