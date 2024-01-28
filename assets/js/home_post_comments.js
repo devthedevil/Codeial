@@ -1,15 +1,13 @@
-
-
 class PostComments{
     constructor(postId){
         this.postId = postId;
         this.postContainer = $(`#post-${postId}`);
         this.newCommentForm = $(`#post-${postId}-comments-form`);
+        
 
         this.createComment(postId);
 
         let self = this;
-        console.log("gh");
         //call for all the existing comments
         $(' .delete-comment-button',this.postContainer).each(function(){
             self.deleteComment($(this));
@@ -23,20 +21,24 @@ class PostComments{
         this.newCommentForm.submit(function(e){
             e.preventDefault();
             let self=this;
+
             $.ajax({
                 type:'post',
                 url:'/comments/create',
-                data:$(self).serialize(),
+                data: $(self).serialize(),
+                
                 success:function(data){
-                    // console.log(postId);
-                    // console.log('sd');
                     // console.log(data);
-                    let newComment = pSelf.newCommentDom(data.data);
+                    // console.log("comment.user.name",data);
+                    let newComment = pSelf.newCommentDom(data.data.comment);
                     
                     $(`#post-comments-${postId}`).prepend(newComment);
                     
                     pSelf.deleteComment($(' .delete-comment-button',newComment));
 
+                    // CHANGE :: enable the functionality of the toggle like button on the new comment
+                    new ToggleLike($(' .toggle-like-button', newComment));
+                    
                     new Noty({
                         theme:'relax',
                         text:'Comment published!!',
@@ -55,18 +57,24 @@ class PostComments{
         });
     }
     //method to create a comment in DOM
-    newCommentDom (data){
+    newCommentDom (comment){
         return $(`
-        <li id="comment-${data.comment._id}">
+        <li id="comment-${comment._id}">
             <p>
                     <small>
-                        <a class="delete-comment-button" href="/comments/destroy/${data.comment._id}">X</a>
+                        <a class="delete-comment-button" href="/comments/destroy/${comment._id}">X</a>
                     </small>
                     
-                ${ data.comment.content }
+                ${ comment.content }
                 <br>
                 <small>
-                    ${data.username }
+                    ${comment.user.name }
+                </small>
+                <br>
+                <small>
+                    <a class="toggle-like-button" data-likes="0" href="/likes/toggle/?id=${comment._id}&type=Comment">
+                        0Likes
+                    </a>
                 </small>
             </p>
         </li>
@@ -102,4 +110,3 @@ class PostComments{
     
 
 }
-// module.exports = PostComments;

@@ -1,24 +1,162 @@
 const User =require('../models/user');
+const crypto = require('crypto');
+const AccessToken =require('../models/reset_password_tokens');
 const fs =require('fs');
 const path = require('path');
+const resetPasswordMailer = require('../mailers/password_reset_mailer');
+const Friendship = require('../models/friendship');
 
-module.exports.profile = async function(req,res){
-    try{
 
-    let user = await User.findById(req.params.id)
-    if(user){
-    return res.render('user_profile',{
-            title:"Profile of users",
-            profile_user:user
-    })
-    }else{
-        return res.redirect('back');
+module.exports.passwordResetDone = async function(req,res){
+    
+    try{ 
+        let accessTokenObject = await AccessToken.findOne({accessToken: req.params.accessToken});
+        accessTokenObject = await accessTokenObject.populate([{path:'user', select:'_id'}]);
+        let user = await User.findOne({_id: accessTokenObject.user._id});
+        const password = req.body.password;
+        // console.log(accessTokenObject);
+        console.log(password.length);
+        console.log(typeof(password));
+        // console.log(typeof(accessTokenObject));
+            if(accessTokenObject.isValid)
+            {   
+               if(password.length==0)
+                {
+                    req.flash('error', "Kindly provide the password!");
+                    console.log("ki");
+                    return res.redirect('back');
+                } 
+                else if(req.body.password == req.body.confirm_password )
+                {
+                    user.password = req.body.password;
+                    accessTokenObject.isValid = false;
+                    user.save();
+                    req.flash('success', "Password updated. Login now!");
+                    return res.redirect('/users/sign-in') 
+                }
+                else
+                {
+                    req.flash('error', "Passwords don't match!");
+                    return res.redirect('back');
+                }
+            }
+            else
+            {
+                req.flash('error', 'Link expired');
+                return res.redirect('/users/reset_password');
+            }
+        
+        // accessToken  = await accessToken.populate([{path:'user', select:'name email'}]);
+    }
+    catch(err){
+        console.log(err);
+    }
+}
+module.exports.resetPassword = async function(req,res){
+    try{    
+        let accessToken = await AccessToken.findOne({accessToken:req.query.accesstoken});
+        // console.log(accessToken);
+        if(accessToken==null)
+        {
+            return res.redirect('/');
+        }
+        else{
+            return res.render('reset_password',{
+                title:'reset_password',
+                accessToken:accessToken
+
+        });
     }
     }catch(err){
-        console.log("Error in finding the user by id",err);
+
     }
+}
+
+
+module.exports.emailSent = async function(req,res){
+    try{ 
+        let user = await User.findOne({email:req.body.email});
+        if(user){
+            let accessTokenObj = await AccessToken.create({
+                isValid:true,
+                accessToken:crypto.randomBytes(10).toString('hex'),  
+                user:user._id 
+
+                });
+            const baseURL = 'http://localhost:8000/users/reset_password/';
+            const link = `${baseURL}?accesstoken=${accessTokenObj.accessToken}`;
+            // let accessTokenObject = await accessTokenObj.populate([{path:'user', select:'name password email'}]);
+            // console.log(typeof(accessTokenObj));
+           
+            resetPasswordMailer.newPasswordResetLink(user,link);
+                return res.render('email_sent',{
+                title:'email_sent',
+                content:'Password reset link has been sent to your email address'
+            });
+        }else{
+                return res.render('email_sent',{
+                title:'email_sent',
+                content:'Your email is not registered, kindly sign up'
+                });
+        }
+        
+        
+    }catch(err){
+        console.log(err);
+    }
+}
+module.exports.provideEmail = async function(req,res){
+    try{ 
+        return res.render('provide_email',{
+            title:"Email"
+
+        });
+    }catch(err){
+        console.log(err);
+    }
+}
+module.exports.profile = async function(req,res){
+    let user = await User.findById(req.params.id);
+
+    let are_friends = false;
+
+    await Friendship.findOne({
+            $or: [{ from_user: req.user._id, to_user: req.params.id },
+            { from_user: req.params.id, to_user: req.user._id }]})
+            .then(friendship=>{
+                if (friendship)
+            {
+                are_friends = true;
+            }
+            }) 
+            .catch(error=>{
+                console.log('There was an error in finding the friendship', error);
+                return;
+            });
+        
+            
+
+        return res.render('user_profile', {
+            title: 'User Profile',
+            profile_user:user,
+            are_friends: are_friends
+        });
+    // try{
+
+    // let user = await User.findById(req.params.id)
+    // if(user){
+    // return res.render('user_profile',{
+    //         title:"Profile of users",
+    //         profile_user:user
+    // })
+    // }else{
+    //     return res.redirect('back');
+    // }
+    // }catch(err){
+    //     console.log("Error in finding the user by id",err);
+    // }
     
-};
+}
 module.exports.profile_picture = async function(req,res){
     try{
 
@@ -55,13 +193,19 @@ module.exports.update = async function(req,res){
                 if(err){
                     console.log('*********Multer Error: ***********',err);
                 }
+                
                 user.name=req.body.name;
                 user.email = req.body.email;
                 if(req.file){
-                    const imagePath = path.join(__dirname,'..',user.avatar);
-                    if(user.avatar && isUserLinkedWithImage(imagePath)){
-                        fs.unlinkSync(imagePath);
+                    
+                    if(user.avatar){
+                        
+                        let fileExists = fs.existsSync(path.join(__dirname , '..' , user.avatar));
+                        if(fileExists){
+                            fs.unlinkSync(path.join(__dirname , '..' , user.avatar));
+                        }
                     }
+                    // console.log('********* Error: ***********');
                     // this is saving the path of the uploaded file into the avatar field in the user
                     user.avatar = User.avatarPath +'/'+ req.file.filename;
                 }
@@ -128,7 +272,7 @@ module.exports.create = async function(req,res){
 
 //get the sign in and create a session for the users
 module.exports.createSession = function(req,res){
-    
+    // console.log('createSession');
     req.flash('success','Logged in Successfully');
     
     return res.redirect('/');

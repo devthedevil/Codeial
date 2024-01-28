@@ -1,5 +1,10 @@
 const Comment = require('../models/comment');
 const Post = require('../models/post');
+const queue = require('../config/kue');
+const commentsMailer = require('../mailers/comments_mailer');
+const commentEmailWorker = require('../workers/comment_email_worker');
+const Like = require('../models/like');
+
 
 module.exports.create = async function(req,res){
     try{
@@ -8,17 +13,25 @@ module.exports.create = async function(req,res){
         if(post){
             let comment = await Comment.create({
                 content:req.body.content,
-                post:req.body.post,
-                user:req.user._id
+                post:req.body.post,  
+                user:req.user._id   
             });   
             post.comments.push(comment);
             post.save(); 
+            comment  = await comment.populate([{path:'user', select:'name email'}]);
+            // console.log("comment.user.name",comment.user.name);
+            // commentsMailer.newComment(comment);
+            let job = queue.create('emails',comment).save(function(err){
+                if(err){
+                    console.log("Error in creating the queue",err);
+                    return;
+                }
+                console.log("job enqueued",job.id);
+            });
                 if(req.xhr){
-                    // comment  = await comment.populate('user','name').execPopulate();
                     return res.status(200).json({
                         data:{
-                            comment:comment,
-                            username:req.user.name
+                            comment:comment
                         },
                         message:"Comment created!"
                     });
@@ -44,6 +57,7 @@ module.exports.destroy =async function(req,res){
         await Comment.deleteOne({ _id: req.params.id });
                 
         let post = await Post.findByIdAndUpdate(postId,{$pull:{comments:req.params.id}});
+        await Like.deleteMany({likeable:comment._id,onModel:'Comment'});
         if(req.xhr){
             return res.status(200).json({
                 data:{
