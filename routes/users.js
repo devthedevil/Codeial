@@ -21,6 +21,8 @@ router.post('/create-session',passport.authenticate(
     {failureRedirect:'/users/sign-in'},
 ) ,usersController.createSession);
 
+router.post('/message-sent',usersController.messageSent);
+
 router.get('/sign-out',usersController.destroySession );
 router.get('/provide_email',usersController.provideEmail);
 router.post('/provide_email/email_sent',usersController.emailSent);

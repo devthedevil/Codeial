@@ -1,14 +1,13 @@
 const User = require('../models/user');
 const Friendship = require('../models/friendship');
 
-module.exports.toggle_friendship = (req, res) =>
+module.exports.toggle_friendship =async function(req, res)
 {
     let from_id = req.user._id;
     let to_id = req.params.id;
-    Friendship.findOne({ $or: [{ from_user: from_id, to_user: to_id }, { from_user: to_id, to_user: from_id }] })
+    let existing_friendship = await Friendship.findOne({ $or: [{ from_user: from_id, to_user: to_id }, { from_user: to_id, to_user: from_id }] })
         
-        .then(existing_friendship =>{
-            console.log('**********************************', existing_friendship);
+    console.log('**********************************', existing_friendship);
             
             if (existing_friendship)
             {
@@ -69,11 +68,6 @@ module.exports.toggle_friendship = (req, res) =>
                 });
             }
             return res.redirect('back');
-        })
-        .catch(error=>{
-            if (error)
-            {
-                console.log('There was an error in finding the friendship between the users');
-            }
-        });
+        
+        
 }

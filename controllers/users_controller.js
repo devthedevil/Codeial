@@ -5,7 +5,37 @@ const fs =require('fs');
 const path = require('path');
 const resetPasswordMailer = require('../mailers/password_reset_mailer');
 const Friendship = require('../models/friendship');
+const Message = require('../models/message');
 
+module.exports.messageSent = async function(req,res){
+    try{ 
+        let message = await Message.create({
+            message:req.body.message_content,
+            from_user:req.user._id,  
+        });
+        if(req.xhr){
+            return res.status(200).json({
+                data:{
+                    message: message
+                },
+                message:"Message Sent!"
+            });
+        }
+        // .then(data=>{
+        //     console.log(data);
+        //     console.log(req.body.message_content);
+        // })
+        // .catch(err=>{
+        //     console.log("err",err);
+        // });
+        // console.log("j22222222222!!!!11");
+        req.flash('success','Message Sent');
+        return res.redirect('back');
+    }catch(err){
+        req.flash("Error",err); 
+        return res.redirect('back');
+    }
+}
 
 module.exports.passwordResetDone = async function(req,res){
     

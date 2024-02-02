@@ -1,0 +1,1 @@
+document.getElementById("password-link").addEventListener("click",function(){var e=$("#message"),s=$("#email").val(),l=$("#form");""==s?e.html("Please provide your email address"):(console.log("ji"),e.html("Password reset link has been sent to your email address"),l.style.display="none")});

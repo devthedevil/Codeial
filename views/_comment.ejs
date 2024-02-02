@@ -4,7 +4,7 @@
     </title>
     
 </head> -->
-<link rel="stylesheet" href="/css/user_profile.css">
+<link rel="stylesheet" href="<%= assetPath('css/user_profile.css')%>"> 
 <li id="comment-<%=comment._id%>">
     <p>
         <%if(locals.user && (locals.user.id==comment.user.id  || locals.user.id==post.user.id)  ){%>

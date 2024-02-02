@@ -20,12 +20,13 @@
 	    overflow: auto;
 
 	    .other-message{
-		    text-align: left;
+		    text-align: left ;
 		    padding: 5px;
 		    span{
 		    	display: inline-block;
-	    		padding: 15px;
-		    	background-color: #ffa0a0;
+	    		padding: 5px;
+		    	background-color:  #ffa0a0;
+				border-radius: 6px;
 		    }
 		    
 	    }
@@ -37,8 +38,9 @@
 		    span{
 		    	 
 	    		display: inline-block;
-	    		padding: 15px;
-    			background-color: #a0dcff;
+	    		padding: 5px;
+    			background-color:  #a0dcff;
+				border-radius: 6px;
 		    }
 		   
 	    }

@@ -1,0 +1,14 @@
+footer {
+  background-color: #053c24;
+  color: white;
+  padding: 2rem; }
+  footer a {
+    color: white; }
+  footer #social {
+    display: inline-flex; }
+  footer #home {
+    display: inline-flex;
+    margin-left: 2rem;
+    margin-bottom: 0.5rem; }
+  footer #profile {
+    margin-left: 15.2rem; }

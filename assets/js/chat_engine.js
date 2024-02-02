@@ -23,9 +23,11 @@ class ChatEngine{
             })
         });
         // CHANGE :: send a message on clicking the send message button
+        let keyDown=false;
         $('#chat-message-input').keydown(function(e){
+            
             if(e.keyCode == 13) {
-               
+            //    console.log(e.keyCode);
             let msg = $('#chat-message-input').val();
 
             if (msg != ''){
@@ -34,12 +36,15 @@ class ChatEngine{
                     user_email: self.userEmail,
                     chatroom: 'codeial'
                 });
+                keyDown=true;
             }
         }});
+        
         $('#send-message').click(function(){
+            
             let msg = $('#chat-message-input').val();
-
-            if (msg != ''){
+            
+            if (!keyDown && msg != '' ){
                 self.socket.emit('send_message', {
                     message: msg,
                     user_email: self.userEmail,
@@ -47,9 +52,10 @@ class ChatEngine{
                 });
             }
         });
+        
 
         self.socket.on('receive_message', function(data){
-            console.log('message received', data.message);
+            // console.log('message received', data);
 
 
             let newMessage = $('<li>');
@@ -64,18 +70,26 @@ class ChatEngine{
                 'html': data.message
             }));
 
-            newMessage.append($('<sub>', {
-                'html': data.user_email
-            }));
+            // newMessage.append($('<sub>', {
+            //     'html': data.user_email
+            // }));
 
             newMessage.addClass(messageType);
 
             $('#chat-messages-list').append(newMessage);
-        })
+        });
     
 
     }
+    
 }
+function scrollToBottom() {
+    var messageList = document.getElementById("chat-messages-list");
+    messageList.scrollTop = messageList.scrollHeight;
+  }
+  
+  // Scroll to bottom when the page is loaded or refreshed
+  window.onload = scrollToBottom;
 
     
 

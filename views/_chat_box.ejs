@@ -1,18 +1,31 @@
 <% if(locals.user){%>
-    <div id="user-chat-box">
+    <div id="user-chat-box">            
         <ul id="chat-messages-list">
-            <li class="other-message">
-                
+            <%for(messages of message){%>
+            <% if(locals.user.email != messages.from_user.email){%>
+            <li class="other-message" id="message-<%= messages.id%>">
+            <span>
+                <%= messages.message %>
+            </span><br>
+                <!-- <%=messages.from_user.email%> -->
             </li>
-            <li class="self-message">
-                
+            <%}else{%>
+            <li class="self-message" id="message-<%= messages.id%>">
+                <span>
+                    <%= messages.message %>
+                </span><br>
+                <!-- <%=messages.from_user.email%> -->
             </li>
+            <%}%>
+            <%}%>
         </ul>
-        <div id="chat-message-input-container">
-            <input id="chat-message-input" placeholder="Type message here">
         
-            <button id="send-message">Send</button>
-            
-        </div>
+        <form id="chat-message-input-container"  action="/users/message-sent" method="POST">
+            <input id="chat-message-input" name="message_content" placeholder="Type message here">
+        
+            <button id="send-message" type="submit">Send</button>
+        </form>
+
     </div>
+    
 <%}%>

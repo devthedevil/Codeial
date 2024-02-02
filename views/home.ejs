@@ -4,8 +4,8 @@
     <title>
         <%= title %>
     </title>
-    <link rel="stylesheet" href="/css/home.css">
-    <link rel="stylesheet" href="/css/chat_box.css">
+    <link rel="stylesheet" href="<%= assetPath('css/home.css')%>">    
+    <link rel="stylesheet" href="<%= assetPath('css/chat_box.css')%>">   
 </head>
 <div id="home-container">
     <section id="feed-posts">
@@ -16,6 +16,15 @@
             <input type="submit" value="Post">
         </form>
         <% } %>
+        <%if(locals.user) {%>
+        <div id="posts-list-container">
+            <ul>
+                <%for(post of home_posts){%>
+                    <%- include('_post') -%>
+                <% } %>
+            </ul>
+        </div>
+        <%}else{%>
         <div id="posts-list-container">
             <ul>
                 <%for(post of posts){%>
@@ -23,6 +32,7 @@
                 <% } %>
             </ul>
         </div>
+        <%}%>
     </section>
 
     <div id="users">
@@ -73,11 +83,12 @@
     </div>
     <%- include('_chat_box') -%>
 
+
 </div>
 
-<script src="/js/home_post_comments.js"></script>
-<script src="/js/home_posts.js"></script>
-<script src="/js/toggle_likes.js"></script>
+<script src="<%= assetPath('js/home_post_comments.js')%>"></script>    
+<script src="<%= assetPath('js/home_posts.js')%>"></script> 
+<script src="<%= assetPath('js/toggle_likes.js')%>"></script> 
 <script>
     $('.toggle-like-button').each(function(){
         let self = this;
@@ -85,7 +96,7 @@
     });
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.4/socket.io.js"></script>
-<script src="/js/chat_engine.js"></script>
+<script src="<%= assetPath('js/chat_engine.js')%>"></script> 
 <% if(locals.user){%>
 <script>
     new ChatEngine('user-chat-box','<%=locals.user.email%>');
