@@ -28,18 +28,22 @@
 
     <!-- <div id="imagePreview"></div> -->
 <%}else{%>
+<div id="profile-user">
     <!-- else show only the profile info -->
-    <p><%=profile_user.name%></p>
-    <p><%=profile_user.email%></p>
+    <img src="<%= profile_user.avatar %>"  alt="<%=user.name%>" width="100"><br>
+    <div><%=profile_user.name%></div>
+    <div><%=profile_user.email%></div>
 
 
 
 <br>
 <%if(!locals.are_friends){%>
     
-    <a type="button" href="/users/profile/<%=profile_user._id%>/toggle_friend" id="add-friend">Add Friend</a>
+    <a type="button" href="/users/profile/<%=profile_user._id%>/toggle_friend" id="add-friend" class="follow-unfollow-btn">Follow</a>
 <%}else{%>
-    <a type="button" href="/users/profile/<%=profile_user._id%>/toggle_friend" id="remove-friend" >Remove Friend</a>
+    <a type="button" href="/users/profile/<%=profile_user._id%>/toggle_friend" id="remove-friend" class="follow-unfollow-btn">Unfollow</a>
 <%}%>
 
 <% } %>
+
+</div>
