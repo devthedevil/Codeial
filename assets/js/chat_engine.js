@@ -85,7 +85,11 @@ class ChatEngine{
 }
 function scrollToBottom() {
     var messageList = document.getElementById("chat-messages-list");
-    messageList.scrollTop = messageList.scrollHeight;
+    if (messageList) {
+        messageList.scrollTop = messageList.scrollHeight;
+      } else {
+        console.error("Element with ID 'chat-messages-list' not found.");
+      }
   }
   
   // Scroll to bottom when the page is loaded or refreshed
