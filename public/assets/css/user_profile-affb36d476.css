@@ -1,0 +1,62 @@
+body {
+  /* Base styles for the button */
+  /* Hover state */
+  /* Active state */ }
+  body #profile-user {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center; }
+  body .container {
+    display: flex;
+    align-items: center;
+    /* Center vertically */
+    justify-content: center;
+    /* Center horizontally */ }
+  body .update-items {
+    display: flex;
+    padding: 0.5rem;
+    align-items: center;
+    /* Center vertically */
+    justify-content: center;
+    /* Center horizontally */ }
+  body label {
+    padding-right: 1rem; }
+  body img {
+    padding: 0.5rem;
+    max-width: 100%;
+    /* Ensure the image doesn't exceed the container's width */
+    max-height: 100%;
+    /* Ensure the image doesn't exceed the container's height */ }
+  body #comment-list {
+    list-style-type: disc; }
+  body .follow-unfollow-btn {
+    display: inline-block;
+    padding: 5px 10px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    border: 2px solid #3d37db;
+    /* Green border */
+    color: #3d37db;
+    /* Green text */
+    background-color: #fff;
+    /* White background */
+    border-radius: 5px;
+    /* Rounded corners */
+    cursor: pointer;
+    /* Cursor on hover */
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+    /* Smooth transition */ }
+  body .follow-unfollow-btn:hover {
+    background-color: #3d37db;
+    /* Green background */
+    color: #fff;
+    /* White text */ }
+  body .follow-unfollow-btn:active {
+    background-color: #3d37db;
+    /* Darker green background */
+    border-color: #3d37db;
+    /* Darker green border */ }

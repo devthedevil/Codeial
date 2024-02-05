@@ -9,6 +9,10 @@
   background: white;
   padding: 0;
   box-shadow: 1px 1px 1px 1px lightgrey; }
+  #user-chat-box #chat-box-header {
+    text-align: center;
+    background-color: #58d258;
+    color: white; }
   #user-chat-box #chat-messages-list {
     list-style: none;
     padding: 10px;

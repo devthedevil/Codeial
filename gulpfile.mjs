@@ -24,7 +24,7 @@ gulp.task('css',function(done){
     .pipe(cssnano())
     .pipe(gulp.dest('./assets.css'));
 
-    return gulp.src('./assets/**/*.css')
+    gulp.src('./assets/**/*.css')
     .pipe(rev())
     .pipe(gulp.dest('./public/assets'))
     .pipe(rev.manifest({

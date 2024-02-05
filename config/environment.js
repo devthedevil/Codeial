@@ -30,7 +30,7 @@ const development ={
     google_call_back_url:"http://localhost:8000/users/auth/google/callback",
     jwt_secretOrKey : 'codeial',
     morgan:{
-        node:'dev',
+        mode:'dev',
         options:{stream:accessLogStream}
     }
 }
@@ -55,7 +55,7 @@ const production ={
     google_call_back_url:process.env.CODEIAL_GOOGLE_CALLBACK_URL,
     jwt_secretOrKey : process.env.CODEIAL_JWT_SECRET,
     morgan:{
-        node:'combined',
+        mode:'combined',
         options:{stream:accessLogStream}
     }
 }
