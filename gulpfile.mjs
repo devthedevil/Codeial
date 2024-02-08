@@ -24,7 +24,7 @@ gulp.task('css',function(done){
     .pipe(cssnano())
     .pipe(gulp.dest('./assets.css'));
 
-    gulp.src('./assets/**/*.css')
+    return gulp.src('./assets/**/*.css')
     .pipe(rev())
     .pipe(gulp.dest('./public/assets'))
     .pipe(rev.manifest({
@@ -37,7 +37,7 @@ gulp.task('css',function(done){
 
 gulp.task('js',function(done){
     console.log('minifyying js .. ');
-    gulp.src('./assets/**/*.js')
+     return gulp.src('./assets/**/*.js')
     .pipe(uglify())
     .pipe(rev())
     .pipe(gulp.dest('./public/assets'))
@@ -46,12 +46,13 @@ gulp.task('js',function(done){
         merge:true
     }))
     .pipe(gulp.dest('./public/assets'));
-    done();
+    
+    
 });
 
 gulp.task('images',function(done){
     console.log('minifyying images .. ');
-    gulp.src('./assets/**/*.+(png|jpg|gif|svg|jpeg)')
+    return gulp.src('./assets/**/*.+(png|jpg|gif|svg|jpeg)')
     .pipe(imagemin())
     .pipe(rev())
     .pipe(gulp.dest('./public/assets'))

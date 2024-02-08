@@ -3,7 +3,7 @@ class ChatEngine{
         this.chatBox = $(`#${chatBoxId}`);
         this.userEmail = userEmail;
 
-        this.socket = io.connect('http://34.229.233.50:5000');
+        this.socket = io.connect('http://localhost:5000');
 
         if(this.userEmail){
             this.connectionHandler();
@@ -87,9 +87,7 @@ function scrollToBottom() {
     var messageList = document.getElementById("chat-messages-list");
     if (messageList) {
         messageList.scrollTop = messageList.scrollHeight;
-      } else {
-        console.error("Element with ID 'chat-messages-list' not found.");
-      }
+      } 
   }
   
   // Scroll to bottom when the page is loaded or refreshed
