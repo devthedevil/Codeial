@@ -159,7 +159,7 @@ home_posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
     
     return res.render('home',{
-        title:"Codeial | Home",
+        title:"Strangers",
         posts:posts,
         all_users:users,
         friends: friends,

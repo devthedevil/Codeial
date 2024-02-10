@@ -1,6 +1,9 @@
 <% if(locals.user){%>
     <div id="user-chat-box">      
-        <div id="chat-box-header">Anonymous Chat Box</div>      
+        <div id="chat-box-header">
+            Anonymous Chat Room<br>
+            
+        </div>      
         <ul id="chat-messages-list">
             <%for(messages of message){%>
             <% if(locals.user.email != messages.from_user.email){%>
